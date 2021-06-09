@@ -1,0 +1,30 @@
+import React from 'react';
+import { Story, Meta } from '@storybook/react';
+
+import { OrderGrid, OrderGridProps } from './OrderGrid';
+import { Orders } from './OrderGrid.fixture';
+
+export default {
+  title: 'dashboard/OrderGrid',
+  component: OrderGrid,
+} as Meta;
+
+const Template: Story<OrderGridProps> = (args) => <OrderGrid {...args} />;
+
+export const LoadingData = Template.bind({});
+LoadingData.args = {
+  loading: true,
+  orders: [],
+};
+
+export const EmptyData = Template.bind({});
+EmptyData.args = {
+  loading: false,
+  orders: [],
+};
+
+export const ReceivedData = Template.bind({});
+ReceivedData.args = {
+  loading: false,
+  orders: Orders,
+};

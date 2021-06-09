@@ -1,0 +1,32 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container diagram for Trading System
+
+Person(investor, "Investor")
+Person_Ext(trader, "Trader")
+
+System_Boundary(trading_system, "Trading System") {
+   Container(investor_dashboard, "Investor Dashboard", "TypeScript, React")
+   Container(investor_dashboard_mob, "Investor Dashboard Mobile", "TypeScript, ReactNative")
+   Container(trader_dashboard, "Trader Dashboard", "Angular")
+   Container(api, "API", "NodeJs")
+   ContainerDb(database, "Database", "Postgres")
+}
+System_Ext(exchange_service, "Exchange Service")
+
+BiRel(api, exchange_service, " ")
+Rel_Neighbor(api, database, " ")
+Rel(investor, investor_dashboard, "HTTPS")
+Rel(investor, investor_dashboard_mob, "HTTPS")
+Rel(trader, trader_dashboard, "HTTPS")
+
+BiRel(trader_dashboard, api, "uses", "SOAP, XML")
+BiRel(investor_dashboard_mob, api, "uses", "SOAP, XML")
+BiRel(investor_dashboard, api, "uses", "HTTPS, REST")
+
+@enduml

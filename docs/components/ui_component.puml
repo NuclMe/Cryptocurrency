@@ -1,0 +1,35 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/react.puml
+!include DEVICONS2/redux_original.puml
+!include DEVICONS/database.puml
+!include FONTAWESOME/user.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Component diagram for Investor Dashboard - SPA
+
+Person(investor, "Investor", $sprite="user")
+Container(API, "API", "API")
+
+Container_Boundary(api, "SPA") {
+    Component(presentation, "Presentation Layer", "React", "Renders and displays UI", $sprite="react")
+    Component(application, "Application Layer", "React-Redux", "Binds React and Redux functionality, provides methods for their conjunction", $sprite="redux_original")
+    Component(domain, "Domain Layer", "Redux", "Contains single state for all the application, provides methods to change state", $sprite="redux_original")
+    Component(data_access, "Data Access Layer", "Redux-Thunk", "Middleware. Intercepts UI calls if they need some data from API, makes API calls to server, receives data from server and DB, provides received data to the store", $sprite="redux_original")
+}
+
+Rel(investor, presentation, "Uses", "HTTPS")
+Rel(application, presentation, " ", "")
+Rel(application, domain, " ", "")
+Rel(data_access, API, "Uses", "HTTPS, REST")
+Rel(data_access, domain, " ", "")
+' Rel(data_access, application, " ", "")
+
+@enduml

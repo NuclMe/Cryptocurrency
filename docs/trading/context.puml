@@ -1,0 +1,21 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context diagram for Trading System
+
+Person(investor, "Investor")
+Person_Ext(trader, "Trader")
+
+System(trading_system, "Trading System")
+System_Ext(exchange_service, "Exchange Service")
+
+BiRel(trading_system, exchange_service, " ")
+Rel(investor, trading_system, " ")
+Rel(trader, trading_system, " ")
+Rel_Back(trader, trading_system, " ")
+
+@enduml

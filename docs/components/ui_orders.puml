@@ -1,0 +1,45 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define DEVICONS2 https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons2
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/react.puml
+!include DEVICONS2/redux_original.puml
+!include DEVICONS/database.puml
+!include FONTAWESOME/user.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Component diagram for Presentation Layer
+
+Person(investor, "Investor", $sprite="user")
+Container(API, "Backend", "API")
+
+Container_Boundary(api, "Investor Dashboard") {
+    Component(position_grid, "Position Grid", "React Component, UI Layer", "", $sprite="react")
+    Component(position_grid_container, "Position Grid Container", "React Component, Application Layer", "", $sprite="react")
+    Component(position_slice, "Position Slice", "Redux Store Slice, Domain Layer", "", $sprite="react")
+
+    Component(orders_grid, "Orders Grid", "React Component, UI Layer", "", $sprite="react")
+    Component(orders_grid_container, "Orders Grid Container", "React Component, Application Layer", "", $sprite="react")
+    Component(orders_slice, "Orders Slice", "Redux Store Slice, Domain Layer", "", $sprite="react")
+    Component(api_client, "API Client", "API Layer", "", $sprite="react")
+}
+
+Rel(investor, orders_grid, "Uses", "HTTPS")
+Rel(investor, position_grid, "Uses", "HTTPS")
+Rel(position_grid_container, position_grid, " ", "")
+Rel(position_grid_container, position_slice, " ", "")
+
+Rel_Neighbor(position_slice, orders_slice, " ", "")
+
+Rel(orders_grid_container, orders_grid, " ", "")
+Rel(orders_grid_container, orders_slice, " ", "")
+Rel(api_client, orders_slice, " ", "")
+Rel(api_client, position_slice, " ", "")
+Rel(api_client, API, "Uses", "HTTPS, REST")
+
+@enduml
